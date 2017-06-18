@@ -1,0 +1,41 @@
+{
+  "name": "amule-rush",
+  "version": "0.2.0",
+  "description": "Redis layer for AlexandraJS aMule",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "coverage": "istanbul cover _mocha -- -R spec",
+    "gh-pages-docs": "./node_modules/.bin/jsdoc -c ./.jsdocrc -r -R ./README.md -d ../gh-pages/aMule-Rush/ src/",
+    "codeclimate": "docker run --rm --env CODECLIMATE_CODE=\"$PWD\" --volume \"$PWD\":/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc codeclimate/codeclimate analyze -f html > codeclimate.html"
+  },
+  "keywords": [
+    "alexandrajs",
+    "multi-layer cache",
+    "aggregated",
+    "in-memory"
+  ],
+  "author": "Michał Żaloudik <ponury.kostek@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "ioredis": "^3.1.1"
+  },
+  "devDependencies": {
+    "amule": "^0.2.0",
+    "benchmark": "^2.1.3",
+    "coveralls": "^2.11.15",
+    "ink-docstrap": "^1.3.0",
+    "istanbul": "^0.4.5",
+    "jsdoc": "^3.4.3",
+    "mocha": "^2.5.3",
+    "mocha-lcov-reporter": "^1.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexandrajs/aMule-Rush.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alexandrajs/aMule-Rush/issues"
+  },
+  "homepage": "https://github.com/alexandrajs/aMule-Rush#readme"
+}
