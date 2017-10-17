@@ -1,6 +1,6 @@
 {
   "name": "amule-rush",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Redis layer for AlexandraJS aMule",
   "main": "index.js",
   "scripts": {

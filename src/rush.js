@@ -3,6 +3,7 @@
  * @author Michał Żaloudik <ponury.kostek@gmail.com>
  */
 const Redis = require('ioredis');
+
 /**
  *
  * @constructor
@@ -19,11 +20,12 @@ function Rush(options) {
 	/**
 	 *
 	 */
-	this.client = options.client || new Redis(options.client);
+	this.client = options.client instanceof Redis ? options.client : new Redis(options.client);
 	this.prefix = options.prefix || '';
 	this.ttl = parseInt(options.ttl, 10) || 0;
 	this.clearStats();
 }
+
 /**
  *
  * @param key
