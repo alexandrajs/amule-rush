@@ -1,17 +1,16 @@
-'use strict';
+"use strict";
 /**
  * @author Michał Żaloudik <ponury.kostek@gmail.com>
  */
-const Redis = require('ioredis');
+const Redis = require("ioredis");
+const fast = require("fast.js");
 
 /**
  *
  * @constructor
  */
 function Rush(options) {
-	if (typeof options !== 'object' || options === null) {
-		options = {prefix: ''};
-	}
+	options = fast.assign({prefix: ""}, options || {});
 	/**
 	 *
 	 * @type {object}
@@ -21,7 +20,7 @@ function Rush(options) {
 	 *
 	 */
 	this.client = options.client instanceof Redis ? options.client : new Redis(options.client);
-	this.prefix = options.prefix || '';
+	this.prefix = options.prefix || "";
 	this.ttl = parseInt(options.ttl, 10) || 0;
 	this.clearStats();
 }
@@ -33,7 +32,7 @@ function Rush(options) {
  * @param callback
  */
 Rush.prototype.has = function (key, field, callback) {
-	this.client.hget(key, field, (err, value) => {
+	this.client.hget(this.prefix + key, field, (err, value) => {
 		if (err || value === null) {
 			return callback(null, false);
 		}
@@ -47,10 +46,10 @@ Rush.prototype.has = function (key, field, callback) {
  * @param callback
  */
 Rush.prototype.get = function (key, field, callback) {
-	this.client.hget(key, field, (err, value) => {
+	this.client.hget(this.prefix + key, field, (err, value) => {
 		if (!err && value !== null) {
 			this.stats.hits++;
-			return callback(null, value);
+			return callback(null, JSON.parse(value));
 		}
 		this.stats.misses++;
 		if (this.next !== null) {
@@ -61,7 +60,7 @@ Rush.prototype.get = function (key, field, callback) {
 				if (value === null) {
 					return callback(err, null);
 				}
-				this.client.hset(key, field, value, () => {
+				this.client.hset(this.prefix + key, field, JSON.stringify(value), () => {
 					callback(null, value);
 				});
 			});
@@ -77,7 +76,7 @@ Rush.prototype.get = function (key, field, callback) {
  * @param callback
  */
 Rush.prototype.set = function (key, field, value, callback) {
-	this.client.hset(key, field, value, (err) => {
+	this.client.hset(this.prefix + key, field, JSON.stringify(value), (err) => {
 		if (this.next !== null) {
 			return this.next.set(key, field, value, callback);
 		}
@@ -91,7 +90,7 @@ Rush.prototype.set = function (key, field, value, callback) {
  * @param callback
  */
 Rush.prototype.delete = function (key, field, callback) {
-	this.client.hdel(key, field, (err) => {
+	this.client.hdel(this.prefix + key, field, (err) => {
 		if (this.next !== null) {
 			return this.next.delete(key, field, callback);
 		}
@@ -104,14 +103,18 @@ Rush.prototype.delete = function (key, field, callback) {
  * @todo implement
  */
 Rush.prototype.clear = function (propagate, callback) {
-	if (typeof propagate === 'function') {
+	if (typeof propagate === "function") {
 		callback = propagate;
 		propagate = undefined;
 	}
-	if (propagate && this.next) {
-		return void this.next.clear(propagate, callback);
-	}
-	process.nextTick(() => {
+	const stream = this.client.scanStream({match: this.prefix + "*"});
+	stream.on("data", (resultKeys) => {
+		this.client.del(resultKeys.join(' '));
+	});
+	stream.on("end", () => {
+		if (propagate && this.next) {
+			return this.next.clear(propagate, callback);
+		}
 		callback(null, true);
 	});
 };
