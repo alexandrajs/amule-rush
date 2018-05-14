@@ -10,6 +10,10 @@ const redisClient = new Redis();
 const redisClient2 = new Redis({db: 2});
 const assert = require("assert");
 describe("Base", () => {
+	after(() => {
+		redisClient.disconnect();
+		redisClient2.disconnect();
+	});
 	describe("AMule", () => {
 		beforeEach((done) => {
 			redisClient.flushall(() => {
@@ -18,7 +22,7 @@ describe("Base", () => {
 		});
 		it("has", (done) => {
 			let mule = new AMule();
-			mule.use(new Rush());
+			mule.use(new Rush({client: redisClient}));
 			mule.has("key", "field", function (err, has) {
 				assert.strictEqual(err, null);
 				assert.strictEqual(has, false);
@@ -34,7 +38,7 @@ describe("Base", () => {
 		});
 		it("set", (done) => {
 			let mule = new AMule();
-			mule.use(new Rush());
+			mule.use(new Rush({client: redisClient}));
 			mule.set("key", "field", "value", (err) => {
 				assert.strictEqual(err, null);
 				mule.has("key", "field", (err, has) => {
@@ -46,7 +50,7 @@ describe("Base", () => {
 		});
 		it("get", (done) => {
 			let mule = new AMule();
-			mule.use(new Rush());
+			mule.use(new Rush({client: redisClient}));
 			mule.get("key", "field", function (err, value) {
 				assert.strictEqual(err, null);
 				assert.strictEqual(value, null);
@@ -62,7 +66,7 @@ describe("Base", () => {
 		});
 		it("delete", (done) => {
 			let mule = new AMule();
-			mule.use(new Rush());
+			mule.use(new Rush({client: redisClient}));
 			mule.set("key", "field", "value", (err) => {
 				assert.strictEqual(err, null);
 				mule.has("key", "field", (err, has) => {
@@ -81,7 +85,7 @@ describe("Base", () => {
 		});
 		it("clear", (done) => {
 			let mule = new AMule();
-			mule.use(new Rush());
+			mule.use(new Rush({client: redisClient}));
 			mule.set("key", "field", "value", (err) => {
 				assert.strictEqual(err, null);
 				mule.has("key", "field", (err, has) => {
@@ -100,7 +104,7 @@ describe("Base", () => {
 		});
 		it("stats", (done) => {
 			let mule = new AMule();
-			const rush = new Rush();
+			const rush = new Rush({client: redisClient});
 			mule.use(rush);
 			mule.get("key", "field", function (err, value) {
 				assert.strictEqual(err, null);
@@ -137,7 +141,7 @@ describe("Base", () => {
 			});
 		});
 		it("has", (done) => {
-			const mule = new AMule(), rush1 = new Rush(), rush2 = new Rush({db: 2});
+			const mule = new AMule(), rush1 = new Rush({client: redisClient}), rush2 = new Rush({client: redisClient2});
 			mule.use(rush1);
 			mule.use(rush2);
 			rush2.has("key", "field", function (err, has) {
@@ -154,7 +158,7 @@ describe("Base", () => {
 			});
 		});
 		it("set", (done) => {
-			const mule = new AMule(), rush1 = new Rush(), rush2 = new Rush({db: 2});
+			const mule = new AMule(), rush1 = new Rush({client: redisClient}), rush2 = new Rush({client: redisClient2});
 			mule.use(rush1);
 			mule.use(rush2);
 			mule.set("key", "field", "value", (err) => {
@@ -167,7 +171,7 @@ describe("Base", () => {
 			});
 		});
 		it("get", (done) => {
-			const mule = new AMule(), rush1 = new Rush(), rush2 = new Rush({db: 2});
+			const mule = new AMule(), rush1 = new Rush({client: redisClient}), rush2 = new Rush({client: redisClient2});
 			mule.use(rush1);
 			mule.use(rush2);
 			rush2.get("key", "field", function (err, value) {
@@ -188,7 +192,7 @@ describe("Base", () => {
 			});
 		});
 		it("delete", (done) => {
-			const mule = new AMule(), rush1 = new Rush(), rush2 = new Rush({db: 2});
+			const mule = new AMule(), rush1 = new Rush({client: redisClient}), rush2 = new Rush({client: redisClient2});
 			mule.use(rush1);
 			mule.use(rush2);
 			mule.set("key", "field", "value", (err) => {
@@ -208,7 +212,7 @@ describe("Base", () => {
 			});
 		});
 		it("clear", (done) => {
-			const mule = new AMule(), rush1 = new Rush(), rush2 = new Rush({db: 2});
+			const mule = new AMule(), rush1 = new Rush({client: redisClient}), rush2 = new Rush({client: redisClient2});
 			mule.use(rush1);
 			mule.use(rush2);
 			mule.set("key", "field", "value", (err) => {
