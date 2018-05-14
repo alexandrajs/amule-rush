@@ -1,8 +1,8 @@
 # Redis layer for AlexandraJS aMule
 
-[![Build Status](https://travis-ci.org/alexandrajs/aMule-Rush.svg?branch=master)](https://travis-ci.org/alexandrajs/aMule-Rush)
-[![Coverage Status](https://coveralls.io/repos/github/alexandrajs/aMule-Rush/badge.svg?branch=master)](https://coveralls.io/github/alexandrajs/aMule-Rush?branch=master)
-[![Code Climate](https://codeclimate.com/github/alexandrajs/aMule-Rush/badges/gpa.svg)](https://codeclimate.com/github/alexandrajs/aMule-Rush)
+[![Build Status](https://travis-ci.org/alexandrajs/amule-rush.svg?branch=master)](https://travis-ci.org/alexandrajs/amule-rush)
+[![Coverage Status](https://coveralls.io/repos/github/alexandrajs/amule-rush/badge.svg?branch=master)](https://coveralls.io/github/alexandrajs/amule-rush?branch=master)
+[![Code Climate](https://codeclimate.com/github/alexandrajs/amule-rush/badges/gpa.svg)](https://codeclimate.com/github/alexandrajs/amule-rush)
 
 ## Installation
 ```bash
@@ -24,4 +24,4 @@ mule.use(new Rush());
 ```
 
 ## API docs
-[Redis layer API](http://alexandrajs.github.io/aMule-Rush/)
+[Redis layer API](http://alexandrajs.github.io/amule-rush/)
