@@ -18,18 +18,18 @@
   "author": "Michał Żaloudik <ponury.kostek@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "amule": "^0.2.3",
     "fast.js": "^0.1.1",
     "ioredis": "^3.2.2"
   },
   "devDependencies": {
-    "amule": "^0.2.0",
     "benchmark": "^2.1.3",
-    "coveralls": "^2.11.15",
-    "ink-docstrap": "^1.3.0",
+    "coveralls": "^3.0.1",
+    "ink-docstrap": "^1.3.2",
     "istanbul": "^0.4.5",
-    "jsdoc": "^3.4.3",
-    "mocha": "^2.5.3",
-    "mocha-lcov-reporter": "^1.2.0"
+    "jsdoc": "^3.5.5",
+    "mocha": "^5.1.1",
+    "mocha-lcov-reporter": "^1.3.0"
   },
   "repository": {
     "type": "git",
