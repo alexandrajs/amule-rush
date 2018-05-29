@@ -11,6 +11,14 @@ const Layer = require("amule").Layer;
  * @constructor
  */
 class Rush extends Layer {
+	/**
+	 *
+	 * @param {Object} [options]
+	 * @param {Redis|Object} [options.client]
+	 * @param {boolean} [options.cluster=false]
+	 * @param {string} [options.prefix=""]
+	 * @param {number} [options.ttl=0]
+	 */
 	constructor(options) {
 		super();
 		this.options = fast.assign({
@@ -31,9 +39,9 @@ class Rush extends Layer {
 
 	/**
 	 *
-	 * @param key
-	 * @param field
-	 * @param callback
+	 * @param {string} key
+	 * @param {string} field
+	 * @param {function} callback
 	 */
 	_has(key, field, callback) {
 		this.client.hget(this.options.prefix + key, field, (err, value) => {
@@ -51,9 +59,9 @@ class Rush extends Layer {
 
 	/**
 	 *
-	 * @param key
-	 * @param field
-	 * @param callback
+	 * @param {string} key
+	 * @param {string} field
+	 * @param {function} callback
 	 */
 	_get(key, field, callback) {
 		this.client.hget(this.options.prefix + key, field, (err, value) => {
@@ -63,10 +71,10 @@ class Rush extends Layer {
 
 	/**
 	 *
-	 * @param key
-	 * @param field
+	 * @param {string} key
+	 * @param {string} field
 	 * @param value
-	 * @param callback
+	 * @param {function} callback
 	 */
 	_set(key, field, value, callback) {
 		this.client.hset(this.options.prefix + key, field, JSON.stringify(value), (err) => {
@@ -79,16 +87,16 @@ class Rush extends Layer {
 
 	/**
 	 *
-	 * @param key
-	 * @param field
-	 * @param callback
+	 * @param {string} key
+	 * @param {string} field
+	 * @param {function} callback
 	 */
 	_delete(key, field, callback) {
 		this.client.hdel(this.options.prefix + key, field, callback);
 	};
 
 	/**
-	 * @param callback
+	 * @param {function} callback
 	 */
 	_clear(callback) {
 		const stream = this.client.scanStream({match: this.options.prefix + "*"});
