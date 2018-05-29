@@ -6,8 +6,8 @@
 const AMule = require("amule");
 const Rush = require("../");
 const Redis = require("ioredis");
-const redisClient = new Redis();
-const redisClient2 = new Redis({db: 2});
+const redisClient = new Redis({db: 2});
+const redisClient2 = new Redis({db: 3});
 const assert = require("assert");
 describe("Base", () => {
 	after(() => {
@@ -16,8 +16,10 @@ describe("Base", () => {
 	});
 	describe("AMule", () => {
 		beforeEach((done) => {
-			redisClient.flushall(() => {
-				done();
+			redisClient.flushdb(() => {
+				redisClient2.flushdb(() => {
+					done();
+				});
 			});
 		});
 		it("has", (done) => {
@@ -120,11 +122,11 @@ describe("Base", () => {
 						assert.strictEqual(val, "value");
 						let stats = rush.getStats(true);
 						assert.strictEqual(stats.misses, 1);
-						assert.strictEqual(stats.ratio, 1);
+						assert.strictEqual(stats.ratio, 0.5);
 						assert.strictEqual(stats.hits, 1);
 						stats = rush.getStats();
 						assert.strictEqual(stats.misses, 0);
-						assert.strictEqual(stats.ratio, 0);
+						assert(Number.isNaN(stats.ratio));
 						assert.strictEqual(stats.hits, 0);
 						done();
 					});
@@ -134,8 +136,8 @@ describe("Base", () => {
 	});
 	describe("AMule 2 levels", () => {
 		beforeEach((done) => {
-			redisClient.flushall(() => {
-				redisClient2.flushall(() => {
+			redisClient.flushdb(() => {
+				redisClient2.flushdb(() => {
 					done();
 				});
 			});
