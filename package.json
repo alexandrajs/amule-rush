@@ -1,6 +1,6 @@
 {
   "name": "amule-rush",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Redis layer for AlexandraJS aMule",
   "main": "index.js",
   "scripts": {
@@ -22,12 +22,13 @@
   },
   "dependencies": {
     "fast.js": "^0.1.1",
-    "ioredis": "^3.2.2"
+    "ioredis": "^3.2.2",
+    "json-less": "^0.4.3"
   },
   "devDependencies": {
     "amule": "^0.2.4",
     "benchmark": "^2.1.3",
-    "coveralls": "^3.0.1",
+    "coveralls": "^3.0.2",
     "ink-docstrap": "^1.3.2",
     "istanbul": "^0.4.5",
     "jsdoc": "^3.5.5",

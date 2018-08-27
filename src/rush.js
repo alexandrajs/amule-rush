@@ -5,7 +5,7 @@
 const Redis = require("ioredis");
 const fast = require("fast.js");
 const Layer = require("amule").Layer;
-
+const JSONLess = require('json-less');
 /**
  *
  * @constructor
@@ -49,7 +49,7 @@ class Rush extends Layer {
 				return callback(err, false);
 			}
 			try {
-				JSON.parse(value);
+				JSONLess.parse(value);
 				callback(err, true);
 			} catch (err) {
 				callback(err, false);
@@ -65,7 +65,7 @@ class Rush extends Layer {
 	 */
 	_get(key, field, callback) {
 		this.client.hget(this.options.prefix + key, field, (err, value) => {
-			callback(err, typeof value === "string" ? JSON.parse(value) : value);
+			callback(err, typeof value === "string" ? JSONLess.parse(value) : value);
 		});
 	};
 
@@ -77,7 +77,7 @@ class Rush extends Layer {
 	 * @param {function} callback
 	 */
 	_set(key, field, value, callback) {
-		this.client.hset(this.options.prefix + key, field, JSON.stringify(value), (err) => {
+		this.client.hset(this.options.prefix + key, field, JSONLess.stringify(value), (err) => {
 			if (err || !this.options.ttl) {
 				return callback(err);
 			}
