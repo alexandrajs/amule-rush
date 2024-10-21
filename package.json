@@ -1,6 +1,6 @@
 {
   "name": "amule-rush",
-  "version": "0.3.6",
+  "version": "0.3.8",
   "description": "Redis layer for AlexandraJS aMule",
   "main": "index.js",
   "scripts": {
@@ -18,21 +18,21 @@
   "author": "Michał Żaloudik <ponury.kostek@gmail.com>",
   "license": "ISC",
   "peerDependencies": {
-    "amule": "^0.2"
+    "amule": "^0.2.5"
   },
   "dependencies": {
     "fast.js": "^0.1.1",
-    "ioredis": "^3.2.2",
-    "json-less": "^0.4.3"
+    "ioredis": "^5.4.1",
+    "json-less": "^0.5.0"
   },
   "devDependencies": {
-    "amule": "^0.2.5",
-    "benchmark": "^2.1.3",
-    "coveralls": "^3.0.2",
+    "amule": "^0.2.6",
+    "benchmark": "^2.1.4",
+    "coveralls": "^3.1.1",
     "ink-docstrap": "^1.3.2",
-    "istanbul": "^0.4.5",
-    "jsdoc": "^3.5.5",
-    "mocha": "^5.2.0",
+    "nyc": "^17.1.0",
+    "jsdoc": "^4.0.4",
+    "mocha": "^10.7.3",
     "mocha-lcov-reporter": "^1.3.0"
   },
   "repository": {

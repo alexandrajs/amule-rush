@@ -5,7 +5,8 @@
 const Redis = require("ioredis");
 const fast = require("fast.js");
 const Layer = require("amule").Layer;
-const JSONLess = require('json-less');
+const JSONLess = require("json-less");
+
 /**
  *
  * @constructor
@@ -15,7 +16,7 @@ class Rush extends Layer {
 	 *
 	 * @param {Object} [options]
 	 * @param {Redis|Object} [options.client]
-	 * @param {boolean} [options.cluster=false]
+	 * @param {Object} [options.cluster]
 	 * @param {string} [options.prefix=""]
 	 * @param {number} [options.ttl=0]
 	 */
@@ -23,14 +24,13 @@ class Rush extends Layer {
 		super();
 		this.options = fast.assign({
 			prefix: "",
-			cluster: false,
 			ttl: 0
 		}, options || {});
 		if (this.options.client && this.options.client.constructor && this.options.client.constructor.name === "Redis") {
 			this.client = this.options.client;
 		} else {
 			if (this.options.cluster) {
-				this.client = new Redis.Cluster(this.options.client);
+				this.client = new Redis.Cluster(this.options.cluster.nodes, this.options.cluster.options);
 			} else {
 				this.client = new Redis(this.options.client);
 			}
